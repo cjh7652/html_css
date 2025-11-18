@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>vw/vh vs % 예시</title>
+<style>
+  body { font-family: system-ui, Arial; padding:20px; background:#f7f7f7; }
+  h2 { margin:10px 0; font-size:16px; }
+
+  /* 고정 부모: %는 부모 기준, vw는 뷰포트 기준 */
+  .box { border:1px solid #ccc; background:#fff; padding:12px; margin-bottom:18px; }
+  .parent-fixed { width:600px; margin:10px 0; padding:12px; border:2px dashed #aaa; }
+  .child { height:40px; line-height:40px; color:#111; padding:0 8px; box-sizing:border-box; }
+
+  .percent { width:50%; background:#cfe8ff; border:1px solid #77b0ff; }
+  .vw { width:50vw; background:#d6ffd7; border:1px solid #7fd57f; }
+
+  /* 고정 높이 부모: %는 부모 기준 높이, vh는 뷰포트 높이 기준 */
+  .parent-height { height:300px; margin:10px 0; padding:12px; border:2px dashed #aaa; }
+  .percent-h { height:50%; background:#ffeecf; border:1px solid #ffbf6b; }
+  .vh { height:50vh; background:#f0d7ff; border:1px solid #c08cff; }
+
+  .info { margin-top:8px; font-size:13px; color:#333; }
+  .labels { display:flex; gap:10px; margin-top:8px; flex-wrap:wrap; }
+  .label { background:#222; color:#fff; padding:4px 8px; border-radius:4px; font-size:13px; }
+</style>
+</head>
+<body>
+  <h1>vw / vh vs % 비교</h1>
+
+  <div class="box">
+    <h2>가로: 부모가 고정 폭(600px)일 때</h2>
+    <div class="parent-fixed">
+      <div class="child percent" id="w-percent">width:50% (부모 기준)</div>
+      <div style="height:8px"></div>
+      <div class="child vw" id="w-vw">width:50vw (뷰포트 기준)</div>
+    </div>
+    <div class="labels">
+      <div class="label" id="w-percent-size">percent 실제 px: --</div>
+      <div class="label" id="w-vw-size">vw 실제 px: --</div>
+    </div>
+    <div class="info">설명: 50%는 부모(600px)의 50% → 300px. 50vw는 브라우저 창 너비의 50%.</div>
+  </div>
+  
+  <div class="box">
+    <h2>세로: 부모가 고정 높이(300px)일 때</h2>
+    <div class="parent-height">
+      <div class="child percent-h" id="h-percent">height:50% (부모 기준)</div>
+      <div style="height:8px"></div>
+      <div class="child vh" id="h-vh">height:50vh (뷰포트 기준)</div>
+    </div>
+    <div class="labels">
+      <div class="label" id="h-percent-size">percent 실제 px: --</div>
+      <div class="label" id="h-vh-size">vh 실제 px: --</div>
+    </div>
+    <div class="info">설명: 50%는 부모(300px)의 50% → 150px. 50vh는 뷰포트 높이의 50%.</div>
+  </div>
+
+<script>
+  function updateSizes(){
+    const wp = document.getElementById('w-percent').getBoundingClientRect().width;
+    const wv = document.getElementById('w-vw').getBoundingClientRect().width;
+    const hp = document.getElementById('h-percent').getBoundingClientRect().height;
+    const hv = document.getElementById('h-vh').getBoundingClientRect().height;
+
+    document.getElementById('w-percent-size').textContent = 'percent 실제 px: ' + Math.round(wp) + 'px';
+    document.getElementById('w-vw-size').textContent = 'vw 실제 px: ' + Math.round(wv) + 'px';
+    document.getElementById('h-percent-size').textContent = 'percent 실제 px: ' + Math.round(hp) + 'px';
+    document.getElementById('h-vh-size').textContent = 'vh 실제 px: ' + Math.round(hv) + 'px';
+  }
+
+  window.addEventListener('resize', updateSizes);
+  window.addEventListener('load', updateSizes);
+</script>
+</body>
+</html>
